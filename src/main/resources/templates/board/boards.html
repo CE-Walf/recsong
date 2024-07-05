@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title> RecSong | 노래 추천 게시판 </title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <!-- Bootstrap icons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+  <!-- FontAwesome 라이브러리 불러오기 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- 폰트 적용 -->
+
+
+  <style>
+    @font-face {
+      font-family: 'KCC-Hanbit';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/KCC-Hanbit.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Ownglyph_Dailyokja-Rg';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2403@1.0/Ownglyph_Dailyokja-Rg.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    #banner{
+      font-family: 'Ownglyph_Dailyokja-Rg', Arial, sans-serif;
+    }
+
+    body {
+      font-family: 'KCC-Hanbit', Arial, sans-serif;
+    }
+
+    .bg-header {
+      background-image: url('/assets/header.png');
+      background-size: cover;
+      background-position: top;
+    }
+
+    .icons-right-bottom {
+      text-align: right; /* 아이콘들을 오른쪽으로 정렬 */
+      margin-top: 10px; /* 버튼과의 간격을 조정 */
+    }
+
+    .card-footer {
+      position: relative; /* 부모를 상대 위치로 설정 */
+    }
+
+    .card.position-relative {
+      overflow: hidden; /* 중요 */
+    }
+    .icons-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 10px;
+    }
+    .icon-pencil, .icon-xmark {
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 5px;
+      margin: 5px;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    .icon-pencil:hover, .icon-xmark:hover {
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+
+  </style>
+
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container px-4 px-lg-5">
+    <a id="banner" class="navbar-brand" href="#!">RECSONG</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+      </ul>
+      <a href="/boards/new" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-music"></i>
+        <span style="margin-left: 5px;"></span>
+        게시판 생성하기
+      </a>
+    </div>
+  </div>
+</nav>
+<!-- Header-->
+<header class="bg-header py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Recommend Song</h1>
+      <p class="lead fw-normal text-white-50 mb-0">여러분이 좋아하는 곡을 추천해주세요!</p>
+    </div>
+  </div>
+</header>
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      <div th:each="board : ${boards}" class="col mb-5">
+        <div class="card h-100 position-relative">
+          <!-- 아이콘 띄우기 -->
+          <div class="icons-overlay">
+            <!--수정-->
+            <a th:href="@{/boards/edit/{id}(id=${board.id})}">
+              <i class="fa-solid fa-pencil icon-pencil"></i>
+            </a>
+            <!--삭제-->
+<!--            <form th:action="@{/boards/delete/{id}(id=${board.id})}" method="post">-->
+<!--              &lt;!&ndash; DELETE 메서드 (DeleteMapping) 사용을 위한 hidden 필드 &ndash;&gt;-->
+<!--              <input type="hidden" name="_method" value="delete"/>-->
+<!--              <button type="submit">-->
+<!--                <i class="fa-solid fa-xmark icon-xmark" th:data-id="${board.id}"></i>-->
+<!--              </button>-->
+<!--            </form>-->
+            <i class="fa-solid fa-xmark icon-xmark" th:data-id="${board.id}" th:onclick="'deleteBoard(' + ${board.id} + ')'"></i>
+
+          </div>
+          <!-- 게시판 사진-->
+          <img class="card-img-top" th:src="@{/assets/board_image.jpg}" alt="boardImage"/>
+          <!-- 게시판 묘사-->
+          <div class="card-body p-4">
+            <div class="text-center">
+              <!-- 게시판 Name -->
+              <h5 class="fw-bolder" th:text="${board.title}">게시판 이름</h5>
+              <!-- 게시판 Description -->
+              <span th:text="${board.description}">게시판 묘사</span>
+            </div>
+          </div>
+          <!-- 게시판 들어가기 -->
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+              <!-- 해당 게시판의 게시글로 이동 -->
+              <a th:href="@{/boards/{id}(id=${board.id})}" class="btn btn-outline-dark mt-auto">
+                입장하기
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--js로 게시판 삭제 구현-->
+<!--<script>-->
+<!--  function deleteBoard(boardId) {-->
+<!--    // 폼 생성-->
+<!--    const form = document.createElement('form');-->
+<!--    form.method = 'post';-->
+<!--    form.action = `/boards/delete/${boardId}`;-->
+
+<!--    // DELETE 메서드 필드 추가-->
+<!--    const methodInput = document.createElement('input');-->
+<!--    methodInput.type = 'hidden';-->
+<!--    methodInput.name = '_method';-->
+<!--    methodInput.value = 'delete';-->
+<!--    form.appendChild(methodInput);-->
+
+<!--    // 폼을 body에 추가하고 제출-->
+<!--    document.body.appendChild(form);-->
+<!--    form.submit();-->
+<!--  }-->
+<!--</script>-->
+
+<!--자바스크립트 알림 메세지 추가-->
+<script>
+  function deleteBoard(boardId) {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      // 폼 생성
+      const form = document.createElement('form');
+      form.method = 'post';
+      form.action = `/boards/delete/${boardId}`;
+
+      // DELETE 메서드 필드 추가
+      const methodInput = document.createElement('input');
+      methodInput.type = 'hidden';
+      methodInput.name = '_method';
+      methodInput.value = 'delete';
+      form.appendChild(methodInput);
+
+      // 폼을 body에 추가하고 제출
+      document.body.appendChild(form);
+
+      // 폼을 AJAX로 제출
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('게시판 삭제에 성공했습니다.');
+          window.location.reload(); // 페이지 새로고침
+        } else {
+          alert('게시판 삭제에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('삭제 중 오류가 발생했습니다.');
+      });
+    }
+  }
+</script>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>
