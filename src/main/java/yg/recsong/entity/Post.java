@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import yg.recsong.audit.BaseEntity;
 
 @Entity
 @Table(name = "post")
@@ -23,7 +24,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Post extends BaseEntity {
     /**
      * 게시글 (Post) <p>
      *
@@ -34,6 +35,10 @@ public class Post {
      * - username : 게시글 작성자 <br>
      *
      * - content : 게시글 내용 <br>
+     *
+     * - createdDate : 게시글 생성일 (BaseEntity로 상속)<br>
+     *
+     * - modifyDate : 게시글 수정일 (BaseEntity로 상속) <br>
      *
      * - comments : 게시글에 들어있는 댓글 <br>
      */
