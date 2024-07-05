@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import yg.recsong.dto.BoardDto;
 import yg.recsong.entity.Board;
+import yg.recsong.entity.BoardMapper;
 import yg.recsong.repository.BoardRepository;
 
 @Service
@@ -22,7 +23,7 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDto> findAllBoards() {
         List<Board> boards = boardRepository.findAll();
         return boards.stream()
-            .map(this::toDto)
+            .map(BoardMapper::toDto)
             .collect(Collectors.toList());
     }
 
@@ -31,15 +32,15 @@ public class BoardServiceImpl implements BoardService {
     public BoardDto findByBoardId(Long id) {
         Board board = boardRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("게시판을 찾을 수 없습니다."));
-        return toDto(board);
+        return BoardMapper.toDto(board);
     }
 
     // 게시판 생성하기
     @Override
     public BoardDto createBoard(BoardDto boardDto) {
-        Board board = toEntity(boardDto);
+        Board board = BoardMapper.toEntity(boardDto);
         Board savedBoard = boardRepository.save(board);
-        return toDto(savedBoard);
+        return BoardMapper.toDto(savedBoard);
     }
 
     // 게시판 수정하기
@@ -50,7 +51,7 @@ public class BoardServiceImpl implements BoardService {
         board.setTitle(boardDto.getTitle());
         board.setDescription(boardDto.getDescription());
         Board updatedBoard = boardRepository.save(board);
-        return toDto(updatedBoard);
+        return BoardMapper.toDto(updatedBoard);
     }
     
     // 게시판 삭제하기
@@ -59,21 +60,5 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.deleteById(id);
     }
 
-    // DTO로 만드는 함수
-    private BoardDto toDto(Board board) {
-        return BoardDto.builder()
-            .id(board.getId())
-            .title(board.getTitle())
-            .description(board.getDescription())
-            .build();
-    }
-
-    // Entity로 만드는 함수
-    private Board toEntity(BoardDto boardDto) {
-        return Board.builder()
-            .title(boardDto.getTitle())
-            .description(boardDto.getDescription())
-            .build();
-    }
 
 }
