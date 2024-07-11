@@ -25,7 +25,11 @@ dependencies {
 	// 이걸 작성하여야 MySQL 이용이 가능하다.
 	// MySQL JDBC 드라이버 버전 8.0.33
 	implementation 'mysql:mysql-connector-java:8.0.33'
-//	runtimeOnly 'mysql:mysql-connector-java'
+	// mapstruct 의존성 추가
+	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+	//	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok' // 컴파일 시 Lombok의 어노테이션 프로세서가 실행
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
