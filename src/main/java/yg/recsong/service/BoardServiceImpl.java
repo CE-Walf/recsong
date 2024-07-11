@@ -4,7 +4,8 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
-import yg.recsong.dto.BoardDto;
+import yg.recsong.dto.BoardRequestDto;
+import yg.recsong.dto.BoardResponseDto;
 import yg.recsong.entity.Board;
 import yg.recsong.entity.BoardMapper;
 import yg.recsong.repository.BoardRepository;
@@ -13,45 +14,47 @@ import yg.recsong.repository.BoardRepository;
 @Transactional
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
+    private final BoardMapper boardMapper;
 
-    public BoardServiceImpl(BoardRepository boardRepository){
+    public BoardServiceImpl(BoardRepository boardRepository, BoardMapper boardMapper) {
         this.boardRepository = boardRepository;
+        this.boardMapper = boardMapper;
     }
 
     // 모든 게시글 불러오기
     @Override
-    public List<BoardDto> findAllBoards() {
+    public List<BoardResponseDto> findAllBoards() {
         List<Board> boards = boardRepository.findAll();
         return boards.stream()
-            .map(BoardMapper::toDto)
+            .map(boardMapper::toDto)
             .collect(Collectors.toList());
     }
 
     // ID로 해당 게시판 불러오기
     @Override
-    public BoardDto findByBoardId(Long id) {
+    public BoardResponseDto findByBoardId(Long id) {
         Board board = boardRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("게시판을 찾을 수 없습니다."));
-        return BoardMapper.toDto(board);
+        return boardMapper.toDto(board);
     }
 
     // 게시판 생성하기
     @Override
-    public BoardDto createBoard(BoardDto boardDto) {
-        Board board = BoardMapper.toEntity(boardDto);
+    public BoardResponseDto createBoard(BoardRequestDto boardRequestDto) {
+        Board board = boardMapper.toEntity(boardRequestDto);
         Board savedBoard = boardRepository.save(board);
-        return BoardMapper.toDto(savedBoard);
+        return boardMapper.toDto(savedBoard);
     }
 
     // 게시판 수정하기
     @Override
-    public BoardDto updateBoard(Long id, BoardDto boardDto){
+    public BoardResponseDto updateBoard(Long id, BoardRequestDto boardRequestDto){
         Board board = boardRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("게시판을 찾을 수 없습니다."));
-        board.setTitle(boardDto.getTitle());
-        board.setDescription(boardDto.getDescription());
+        board.setTitle(boardRequestDto.getTitle());
+        board.setDescription(boardRequestDto.getDescription());
         Board updatedBoard = boardRepository.save(board);
-        return BoardMapper.toDto(updatedBoard);
+        return boardMapper.toDto(updatedBoard);
     }
     
     // 게시판 삭제하기
