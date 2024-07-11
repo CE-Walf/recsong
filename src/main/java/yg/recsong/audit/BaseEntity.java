@@ -30,9 +30,9 @@ public class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false) // 수정 불가
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    private LocalDateTime modifiedAt;
 
 }
