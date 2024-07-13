@@ -44,5 +44,6 @@ public class Board {
     private String description;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default // 빌더를 통해 객체를 생성할 때 comments 필드의 초기값으로 새로운 ArrayList가 사용
     private List<Post> posts = new ArrayList<>();
 }
