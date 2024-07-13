@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import yg.recsong.audit.BaseEntity;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Post extends BaseEntity {
     /**
      * 게시글 (Post) <p>
@@ -53,6 +55,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default // 빌더를 통해 객체를 생성할 때 comments 필드의 초기값으로 새로운 ArrayList가 사용
     private List<Comment> comments = new ArrayList<>();
 
     // Post와 Board 관계 설정
