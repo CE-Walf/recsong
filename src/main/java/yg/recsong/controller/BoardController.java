@@ -1,5 +1,6 @@
 package yg.recsong.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import yg.recsong.dto.BoardRequestDto;
 import yg.recsong.dto.BoardResponseDto;
+import yg.recsong.dto.PostResponseDto;
 import yg.recsong.service.BoardService;
 
 @Controller
@@ -64,6 +66,22 @@ public class BoardController {
         BoardResponseDto boardDto = boardService.findByBoardId(id);
         model.addAttribute("boardDto", boardDto);
         return "board/modifyBoard";
+    }
+
+    // [게시판 상세정보 사이트로 이동]
+    @GetMapping("/boards/{id}")
+    public String showPostsOfBoard(@PathVariable Long id, Model model){
+        // 게시판 이름 가져오기
+        String boardName = boardService.findBoardNameById(id);
+        // 게시글 가져오기
+        List<PostResponseDto> posts = boardService.findByBoardId(id).getPosts();
+
+        // 뷰에서 게시판의 이름과, 게시글을 띄워야하므로 boardName과 Post를 attribute해준다.
+        model.addAttribute("boardName", boardName);
+        model.addAttribute("posts", posts);
+        model.addAttribute("boardId", id); // 게시글 이동을 위해서
+
+        return "board/posts";
     }
 
     // [게시판 이름, 설명 수정]

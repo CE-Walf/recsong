@@ -64,4 +64,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
 
+    // 게시판 이름 가져오기
+    public String findBoardNameById(Long id) {
+        Board board = boardRepository.findById(id).orElse(null);
+        if (board != null) {
+            return board.getTitle();
+        } else {
+            throw new RuntimeException("Board not found with id: " + id);
+        }
+    }
+
 }
