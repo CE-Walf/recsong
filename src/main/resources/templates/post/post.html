@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title th:text="'RecSong | ' + ${post.title}"></title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+
+  <!-- Bootstrap core CSS-->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap icons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="/css/styles.css" rel="stylesheet" />
+  <!-- FontAwesome 라이브러리 불러오기 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- 폰트 적용 -->
+  <style>
+
+    @font-face {
+      font-family: 'Ownglyph_Dailyokja-Rg';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2403@1.0/Ownglyph_Dailyokja-Rg.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'KCC-Hanbit';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/KCC-Hanbit.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      font-family: 'KCC-Hanbit', Arial, sans-serif;
+      background-image: url('/assets/header.png');
+      background-size: cover;
+      background-position: top;
+    }
+
+    nav{
+      font-family: 'Ownglyph_Dailyokja-Rg', Arial, sans-serif;
+    }
+
+    .btn-outline-secondary{
+      font-family: 'KCC-Hanbit', Arial, sans-serif;
+    }
+
+    .card {
+      height: auto;
+      max-height: 60vh;
+      width: 150vh;
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    ul {
+      list-style-type: none; /* 리스트 앞의 기호 제거 */
+    }
+
+
+  </style>
+
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="/boards">RECSONG</a>
+  </div>
+</nav>
+<!-- Header-->
+<!-- Section-->
+<section class="py-5">
+  <div class="container px-4 px-lg-5 mt-5">
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+      <!--Begin of Big Card-->
+      <div class="card shadow mb-4" style="padding: 0px; margin: 20px">
+        <!--Big Card Head-->
+        <div class="card-header py-3">
+          <h5 class="m-0 font-weight-bold text-primary">게시글 이름</h5>
+        </div>
+        <!--Begin of Big Card Body-->
+        <div>
+          <h1>게시글 상세 페이지</h1>
+          <hr>
+          <a class="btn btn-primary me-2" th:href="@{'/boards/' + ${boardId} + '/posts/' + ${post.id} + '/edit'}">수정</a>
+<!--          <form th:action="@{/boards/{boardId}/posts/{postId}/delete(boardId=${boardId}, postId=${post.id})}" method="post">-->
+<!--            <button type="submit" class="btn btn-danger">삭제</button>-->
+<!--          </form>-->
+          <button class="btn btn-danger" id="delete-button">삭제</button>
+          <div>
+          <!-- 게시글 정보 -->
+          <div>
+            <h2 th:text="${post.title}"></h2>
+            <p>작성자: <span th:text="${post.author}"></span></p>
+            <p>내용: <span th:text="${post.content}"></span></p>
+          </div>
+
+          <hr>
+
+<!--          <div>-->
+<!--            <h2>댓글 목록</h2>-->
+<!--            <ul th:if="${not #lists.isEmpty(comments)}">-->
+<!--              &lt;!&ndash; 댓글이 있을 경우 &ndash;&gt;-->
+<!--              <li th:each="comment : ${comments}">-->
+<!--                <p>작성자: <span th:text="${comment.username}"></span></p>-->
+<!--                <p><span th:text="${comment.content}"></span></p>-->
+
+<!--                &lt;!&ndash; 댓글 수정 버튼 &ndash;&gt;-->
+<!--                <a th:href="@{'/boards/' + ${boardId} + '/posts/' + ${postDTO.id} + '/comments/' + ${comment.id} + '/edit'}">댓글 수정</a>-->
+
+<!--                &lt;!&ndash; 댓글 삭제 버튼 &ndash;&gt;-->
+<!--                <form th:action="@{'/boards/' + ${boardId} + '/posts/' + ${postDTO.id} + '/comments/' + ${comment.id}}" method="post">-->
+<!--                  <input type="hidden" name="_method" value="delete">-->
+<!--                  <button type="submit">댓글 삭제</button>-->
+<!--                </form>-->
+
+<!--              </li>-->
+<!--            </ul>-->
+<!--            <ul th:if="${#lists.isEmpty(comments)}">-->
+<!--              &lt;!&ndash; 댓글이 없는 경우 &ndash;&gt;-->
+<!--              <li>댓글이 없습니다.</li>-->
+<!--            </ul>-->
+<!--          </div>-->
+
+          <!-- 댓글 작성 폼 -->
+<!--          <div>-->
+<!--            <h2>댓글 작성</h2>-->
+<!--            <form th:action="@{'/boards/' + ${boardId} + '/posts/' + ${postDTO.id} + '/comments'}" method="post">-->
+<!--              <div>-->
+<!--                <label for="username">작성자:</label>-->
+<!--                <input type="text" id="username" name="username" required>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <label for="content">내용:</label>-->
+<!--                <textarea id="content" name="content" required></textarea>-->
+<!--              </div>-->
+<!--              <button type="submit">댓글 작성</button>-->
+<!--            </form>-->
+<!--          </div>-->
+        </div>
+      </div>
+      <!--End of Big Card Body-->
+    </div>
+    <!--End of Big Card-->
+
+  </div>
+  </div>
+</section>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+<!-- 삭제 요청을 보내는 JavaScript 함수 -->
+<script th:inline="javascript">
+  var boardId = /*[[${boardId}]]*/ 0;
+  var postId = /*[[${post.id}]]*/ 0;
+
+  document.getElementById("delete-button").onclick = function() {
+    if (confirm("정말 이 게시글을 삭제하시겠습니까?")) {
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/boards/' + boardId + '/posts/' + postId;
+
+      var methodField = document.createElement('input');
+      methodField.type = 'hidden';
+      methodField.name = '_method';
+      methodField.value = 'DELETE';
+      form.appendChild(methodField);
+
+      var csrfToken = /*[['${_csrf.token}']]*/ 'dummy-csrf-token'; // update with actual CSRF token
+      var csrfInput = document.createElement('input');
+      csrfInput.type = 'hidden';
+      csrfInput.name = '_csrf';
+      csrfInput.value = csrfToken;
+      form.appendChild(csrfInput);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+  }
+</script>
+</body>
+</html>
+
