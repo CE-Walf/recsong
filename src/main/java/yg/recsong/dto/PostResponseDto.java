@@ -1,8 +1,5 @@
 package yg.recsong.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +17,6 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String author;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createdAt;
+    private String createdAt;
     private Long boardId;
 }

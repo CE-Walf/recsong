@@ -1,5 +1,6 @@
 package yg.recsong.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,4 +16,5 @@ public class BoardResponseDto {
     private Long id;
     private String title;
     private String description;
+    private List<PostResponseDto> posts;
 }
